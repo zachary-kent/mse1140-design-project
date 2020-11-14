@@ -3,6 +3,12 @@ import csv
 
 class AccParser:
 
+    """
+
+    Parses the acceleration data from a .csv file
+
+    """
+
     def __enter__(self):
         self.file = open(self.path, mode="r")
         self.reader: csv.reader = csv.reader(self.file, delimiter=",")
@@ -14,11 +20,11 @@ class AccParser:
 
     def __init_lists__(self):
         self.lines = tuple(row for row in self.reader)[1::]
-        self.x_acc = self.__get_acc__(1)
-        self.y_acc = self.__get_acc__(2)
-        self.z_acc = self.__get_acc__(3)
+        self.x_acc = self.get_acc(1)
+        self.y_acc = self.get_acc(2)
+        self.z_acc = self.get_acc(3)
 
-    def __get_acc__(self, index: int) -> tuple:
+    def get_acc(self, index: int) -> tuple:
         return tuple((float(line[0]), float(line[index])) for line in self.lines)
 
     def __init__(self, path: str):
@@ -28,6 +34,3 @@ class AccParser:
 if __name__ == "__main__":
     with AccParser("sensor.csv") as parser:
         print(parser.x_acc)
-
-
-
